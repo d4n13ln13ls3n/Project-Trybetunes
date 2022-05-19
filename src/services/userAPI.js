@@ -19,7 +19,7 @@ const simulateRequest = (response) => (callback) => {
 };
 
 export const getUser = () => new Promise((resolve) => {
-  let user = readUser();
+  let user = readUser(); // The promise simulates a request to an API and resolve is the callback you call to finish a promise successfully
   if (user === null) {
     user = {};
   }
@@ -34,6 +34,7 @@ export const createUser = (user) => new Promise((resolve) => {
     description: '',
   };
   saveUser({ ...emptyUser, ...user });
+  console.log('user:', user);
   simulateRequest(SUCCESS_STATUS)(resolve);
 });
 
