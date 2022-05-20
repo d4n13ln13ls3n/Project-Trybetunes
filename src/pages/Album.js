@@ -21,21 +21,22 @@ class Album extends React.Component {
       },
     } = this.props;
     const response = await getMusics(id);
-    this.setState({ songs: response.filter((it) => it.wrapperType === 'track') });
+    this.setState({ songs: response });
   };
 
   render() {
     const { songs } = this.state;
-    const [firstSong] = songs;
+    const [ collection, ...tracks ] = songs;
+
     console.log('songs', songs);
     return (
       <div data-testid="page-album">
         <Header />
-        {firstSong && <span data-testid="artist-name">{firstSong.artistName}</span>}
+        {collection && <span data-testid="artist-name">{collection.artistName}</span>}
         <br />
-        {firstSong && <span data-testid="album-name">{firstSong.collectionName}</span>}
+        {collection && <span data-testid="album-name">{collection.collectionName}</span>}
         <ul style={ { listStyle: 'none' } }>
-          {songs.map((song) => (
+          {tracks.map((song) => (
             <li key={ song.id }>
               { song.trackName }
               <MusicCard song={ song } />
