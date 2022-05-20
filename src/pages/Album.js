@@ -26,8 +26,8 @@ class Album extends React.Component {
 
   render() {
     const { songs } = this.state;
-    const [ collection, ...tracks ] = songs;
-
+    const [collection, ...tracks] = songs;
+    console.log('tracks:', tracks);
     console.log('songs', songs);
     return (
       <div data-testid="page-album">
