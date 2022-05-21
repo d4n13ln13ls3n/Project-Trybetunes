@@ -12,24 +12,22 @@ class Album extends React.Component {
     songs: [],
     loading: true,
     favorites: [],
-    counter: 0,
     // checked: false,
   };
 
   async componentDidMount() {
-    this.onLoad();
+    await this.onLoad();
     // getFavoriteSongs();
     const quantityFavorites = await getFavoriteSongs();
     this.setState({
       loading: false,
       favorites: quantityFavorites, // quando se está dentro de uma função JS não é necessário envolver com chaves; se estiver dentro de escopo HTML precisa
-
     });
   }
 
   isFavorite = (song) => {
     const { favorites } = this.state;
-    return !!favorites.find((track) => track.trackName === song.trackName);
+    return favorites.some((track) => track.trackId === song.trackId);
   }
 
   onLoad = async () => {
@@ -43,24 +41,16 @@ class Album extends React.Component {
   };
 
   handleCheckboxChange = async (song) => {
-    const setFavorites = await getFavoriteSongs();
     this.setState({
       loading: true,
     });
     if (!this.isFavorite(song)) {
       await addSong(song);
-      this.setState((prevState) => ({
-        counter: prevState.counter + 1,
-        favorites: setFavorites,
-      }));
     } else {
       await removeSong(song);
-      this.setState((prevState) => ({
-        counter: prevState.counter - 1,
-        favorites: setFavorites,
-      }));
     }
     // const quantityFavorites = await getFavoriteSongs();
+    const setFavorites = await getFavoriteSongs();
     this.setState({
       loading: false,
       favorites: setFavorites, // quando se está dentro de uma função JS não é necessário envolver com chaves; se estiver dentro de escopo HTML precisa
@@ -73,36 +63,36 @@ class Album extends React.Component {
     // const { checked } = this.props.children;
     const [collection, ...tracks] = songs;
     // console.log('tracks:', tracks);
-    console.log('songs', songs);
+    // console.log('songs', songs);
     // console.log('collection:', collection);
     return (
       <div>
-        { loading ? <span>Carregando...</span>
-          : (
-            <div data-testid="page-album">
-              <Header />
-              {collection && <img
-                src={ collection.artworkUrl100 }
-                alt={ collection.collectionName }
-              />}
-              <br />
-              {collection && <p data-testid="artist-name">{collection.artistName}</p>}
-              <br />
-              {collection && <p data-testid="album-name">{collection.collectionName}</p>}
-              <ul style={ { listStyle: 'none' } }>
-                {tracks.map((song) => (
-                  <li key={ song.trackId }>
-                    { song.trackName }
-                    <MusicCard
-                      song={ song }
-                      isFavorite={ this.isFavorite(song) }
-                      handleChange={ this.handleCheckboxChange }
-                    />
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
+
+        <div data-testid="page-album">
+          <Header />
+          { loading && <span>Carregando...</span> }
+          {collection && <img
+            src={ collection.artworkUrl100 }
+            alt={ collection.collectionName }
+          />}
+          <br />
+          {collection && <p data-testid="artist-name">{collection.artistName}</p>}
+          <br />
+          {collection && <p data-testid="album-name">{collection.collectionName}</p>}
+          <ul style={ { listStyle: 'none' } }>
+            {tracks.map((song) => (
+              <li key={ song.trackId }>
+                { song.trackName }
+                <MusicCard
+                  song={ song }
+                  isFavorite={ this.isFavorite(song) }
+                  handleChange={ this.handleCheckboxChange }
+                />
+              </li>
+            ))}
+          </ul>
+        </div>
+        )
       </div>
     );
   }

@@ -23,14 +23,14 @@ class MusicCard extends React.Component {
                 <code>audio</code>
                 .
               </audio>
-              <label htmlFor="checkbox">
+              <label htmlFor={ song.trackName }>
                 Favorita
                 <input
                   type="checkbox"
-                  id="checkbox"
+                  id={ song.trackName }
                   data-testid={ `checkbox-music-${song.trackId}` }
                   onChange={ () => handleChange(song) }
-                  defaultChecked={ isFavorite }
+                  checked={ isFavorite }
                 />
               </label>
             </div>
@@ -44,6 +44,7 @@ MusicCard.propTypes = {
   song: PropTypes.shape({
     trackId: PropTypes.number.isRequired,
     previewUrl: PropTypes.string.isRequired,
+    trackName: PropTypes.string.isRequired,
   }).isRequired,
   isFavorite: PropTypes.bool.isRequired,
   handleChange: PropTypes.func.isRequired,
