@@ -61,20 +61,22 @@ class Album extends React.Component {
     // const { checked } = this.props.children;
     const [collection, ...tracks] = songs;
     // console.log('tracks:', tracks);
-    // console.log('songs', songs);
+    console.log('songs', songs);
+    // console.log('collection:', collection);
     return (
       <div>
         { loading ? <span>Carregando...</span>
           : (
             <div data-testid="page-album">
               <Header />
+              {collection && <img src={ collection.artworkUrl100 } alt={ collection.collectionName } />}
+              <br />
               {collection && <p data-testid="artist-name">{collection.artistName}</p>}
               <br />
               {collection && <p data-testid="album-name">{collection.collectionName}</p>}
               <ul style={ { listStyle: 'none' } }>
                 {tracks.map((song) => (
                   <li key={ song.trackId }>
-                    console.log()
                     { song.trackName }
                     <MusicCard
                       song={ song }
