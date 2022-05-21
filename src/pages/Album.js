@@ -68,15 +68,19 @@ class Album extends React.Component {
           : (
             <div data-testid="page-album">
               <Header />
-              {collection && <span data-testid="artist-name">{collection.artistName}</span>}
+              {collection && <p data-testid="artist-name">{collection.artistName}</p>}
               <br />
-              {collection && <span data-testid="album-name">{collection.collectionName}</span>}
+              {collection && <p data-testid="album-name">{collection.collectionName}</p>}
               <ul style={ { listStyle: 'none' } }>
                 {tracks.map((song) => (
                   <li key={ song.trackId }>
                     console.log()
                     { song.trackName }
-                    <MusicCard song={ song } isFavorite={ this.isFavorite(song) } handleChange={ this.handleCheckboxChange } />
+                    <MusicCard
+                      song={ song }
+                      isFavorite={ this.isFavorite(song) }
+                      handleChange={ this.handleCheckboxChange }
+                    />
                   </li>
                 ))}
               </ul>
