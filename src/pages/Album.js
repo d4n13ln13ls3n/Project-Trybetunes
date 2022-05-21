@@ -5,13 +5,14 @@ import PropTypes from 'prop-types';
 import Header from '../components/Header';
 import getMusics from '../services/musicsAPI';
 import MusicCard from '../components/MusicCard';
-import { getFavoriteSongs, addSong } from '../services/favoriteSongsAPI';
+import { getFavoriteSongs, addSong, removeSong } from '../services/favoriteSongsAPI';
 
 class Album extends React.Component {
   state = {
     songs: [],
     loading: true,
     favorites: [],
+    counter: 0,
     // checked: false,
   };
 
@@ -42,11 +43,22 @@ class Album extends React.Component {
   };
 
   handleCheckboxChange = async (song) => {
+    const setFavorites = await getFavoriteSongs();
     this.setState({
       loading: true,
     });
     if (!this.isFavorite(song)) {
       await addSong(song);
+      this.setState((prevState) => ({
+        counter: prevState.counter + 1,
+        favorites: setFavorites,
+      }));
+    } else {
+      await removeSong(song);
+      this.setState((prevState) => ({
+        counter: prevState.counter - 1,
+        favorites: setFavorites,
+      }));
     }
     const quantityFavorites = await getFavoriteSongs();
     this.setState({
