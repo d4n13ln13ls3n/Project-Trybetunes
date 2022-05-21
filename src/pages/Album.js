@@ -60,10 +60,10 @@ class Album extends React.Component {
         favorites: setFavorites,
       }));
     }
-    const quantityFavorites = await getFavoriteSongs();
+    // const quantityFavorites = await getFavoriteSongs();
     this.setState({
       loading: false,
-      favorites: quantityFavorites, // quando se está dentro de uma função JS não é necessário envolver com chaves; se estiver dentro de escopo HTML precisa
+      favorites: setFavorites, // quando se está dentro de uma função JS não é necessário envolver com chaves; se estiver dentro de escopo HTML precisa
       // checked: true,
     });
   }
@@ -81,7 +81,10 @@ class Album extends React.Component {
           : (
             <div data-testid="page-album">
               <Header />
-              {collection && <img src={ collection.artworkUrl100 } alt={ collection.collectionName } />}
+              {collection && <img
+                src={ collection.artworkUrl100 }
+                alt={ collection.collectionName }
+              />}
               <br />
               {collection && <p data-testid="artist-name">{collection.artistName}</p>}
               <br />
