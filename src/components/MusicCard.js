@@ -1,53 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { addSong } from '../services/favoriteSongsAPI';
 
 class MusicCard extends React.Component {
   state = {
     loading: false,
-    checked: false,
-  }
-
-  // onSCheck = async () => {
-  //   const { searchText } = this.state;
-  //   this.setState({
-  //     loading: true,
-  //     artisttext: searchText,
-  //   }, async () => {
-  //     const response = await searchAlbumsAPI(searchText);
-  //     this.setState({
-  //       searchText: '',
-  //       artists: response,
-  //       loading: false,
-  //     });
-  //   });
-  // };
-
-  handleCheckboxChange = async (event) => {
-    this.setState({
-      loading: true,
-    });
-    const { song } = this.props;
-    console.log('song:', song);
-    if (event.target.checked) {
-      await addSong(song);
-      this.setState({
-        loading: false,
-        checked: true,
-      });
-    }
   }
 
   render() {
-    const { loading, checked } = this.state;
-    const { song } = this.props;
-
-    // onChange = () => {
-    //   if (checkbox.checked) {
-    //     return true;
-    //   }
-    //   return false;
-    // }
+    const { loading } = this.state;
+    const { song, isFavorite, handleChange } = this.props;
 
     return (
 
@@ -68,8 +29,8 @@ class MusicCard extends React.Component {
                   type="checkbox"
                   id="checkbox"
                   data-testid={ `checkbox-music-${song.trackId}` }
-                  onChange={ this.handleCheckboxChange }
-                  checked={ checked }
+                  onChange={ () => handleChange(song) }
+                  checked={ isFavorite }
                 />
               </label>
             </div>
@@ -80,7 +41,12 @@ class MusicCard extends React.Component {
 }
 
 MusicCard.propTypes = {
-  song: PropTypes.string.isRequired,
+  song: PropTypes.shape({
+    trackId: PropTypes.number.isRequired,
+    previewUrl: PropTypes.string.isRequired,
+  }).isRequired,
+  isFavorite: PropTypes.bool.isRequired,
+  handleChange: PropTypes.func.isRequired,
 };
 
 export default MusicCard;

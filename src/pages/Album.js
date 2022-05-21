@@ -1,17 +1,34 @@
+/* eslint-disable max-len */
 import React from 'react';
 // import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Header from '../components/Header';
 import getMusics from '../services/musicsAPI';
 import MusicCard from '../components/MusicCard';
+import { getFavoriteSongs, addSong } from '../services/favoriteSongsAPI';
 
 class Album extends React.Component {
   state = {
     songs: [],
+    loading: true,
+    favorites: [],
+    // checked: false,
   };
 
-  componentDidMount() {
+  async componentDidMount() {
     this.onLoad();
+    // getFavoriteSongs();
+    const quantityFavorites = await getFavoriteSongs();
+    this.setState({
+      loading: false,
+      favorites: quantityFavorites, // quando se está dentro de uma função JS não é necessário envolver com chaves; se estiver dentro de escopo HTML precisa
+
+    });
+  }
+
+  isFavorite = (song) => {
+    const { favorites } = this.state;
+    return !!favorites.find((track) => track.trackName === song.trackName);
   }
 
   onLoad = async () => {
@@ -24,25 +41,47 @@ class Album extends React.Component {
     this.setState({ songs: response });
   };
 
+  handleCheckboxChange = async (song) => {
+    this.setState({
+      loading: true,
+    });
+    if (!this.isFavorite(song)) {
+      await addSong(song);
+    }
+    const quantityFavorites = await getFavoriteSongs();
+    this.setState({
+      loading: false,
+      favorites: quantityFavorites, // quando se está dentro de uma função JS não é necessário envolver com chaves; se estiver dentro de escopo HTML precisa
+      // checked: true,
+    });
+  }
+
   render() {
-    const { songs } = this.state;
+    const { songs, loading } = this.state;
+    // const { checked } = this.props.children;
     const [collection, ...tracks] = songs;
-    console.log('tracks:', tracks);
-    console.log('songs', songs);
+    // console.log('tracks:', tracks);
+    // console.log('songs', songs);
     return (
-      <div data-testid="page-album">
-        <Header />
-        {collection && <span data-testid="artist-name">{collection.artistName}</span>}
-        <br />
-        {collection && <span data-testid="album-name">{collection.collectionName}</span>}
-        <ul style={ { listStyle: 'none' } }>
-          {tracks.map((song) => (
-            <li key={ song.id }>
-              { song.trackName }
-              <MusicCard song={ song } />
-            </li>
-          ))}
-        </ul>
+      <div>
+        { loading ? <span>Carregando...</span>
+          : (
+            <div data-testid="page-album">
+              <Header />
+              {collection && <span data-testid="artist-name">{collection.artistName}</span>}
+              <br />
+              {collection && <span data-testid="album-name">{collection.collectionName}</span>}
+              <ul style={ { listStyle: 'none' } }>
+                {tracks.map((song) => (
+                  <li key={ song.trackId }>
+                    console.log()
+                    { song.trackName }
+                    <MusicCard song={ song } isFavorite={ this.isFavorite(song) } handleChange={ this.handleCheckboxChange } />
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
       </div>
     );
   }

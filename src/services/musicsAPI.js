@@ -1,8 +1,8 @@
 const getMusics = async (id) => {
   const request = await fetch(`https://itunes.apple.com/lookup?id=${id}&entity=song`);
   const requestJson = await request.json();
-  console.log('requestJson:', requestJson);
-  console.log('requestJson:', requestJson.results);
+  // console.log('requestJson:', requestJson);
+  // console.log('requestJson:', requestJson.results);
   return requestJson.results;
 };
 
