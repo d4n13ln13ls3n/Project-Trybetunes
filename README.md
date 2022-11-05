@@ -1,4 +1,7 @@
-  ## - Project Trybe Tunes
+![Captura de tela de 2022-11-05 18-55-12](https://user-images.githubusercontent.com/92753791/200142801-5095e4d0-09f2-44d0-b36f-7f550a1683a9.png)
+  
+  
+  ## Project Trybe Tunes
   Projeto desenvolvido no módulo de Front-end da [Trybe](https://www.betrybe.com/).
   English below
 
