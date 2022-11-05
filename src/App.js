@@ -7,6 +7,7 @@ import Favorites from './pages/Favorites';
 import Profile from './pages/Profile';
 import ProfileEdit from './pages/ProfileEdit';
 import NotFound from './pages/NotFound';
+import PrivateRoute from './components/PrivateRoute';
 
 class App extends React.Component {
   render() {
@@ -14,7 +15,13 @@ class App extends React.Component {
       <BrowserRouter>
         <Switch>
           <Route exact path="/" component={ Login } />
-          <Route path="/search" render={ () => <Search /> } />
+          <Route
+            path="/search"
+            render={ (props) => (<PrivateRoute
+              { ...props }
+              Component={ Search }
+            />) }
+          />
           <Route exact path="/album/:id" component={ Album } />
           <Route path="/favorites" render={ () => <Favorites /> } />
           <Route exact path="/profile" render={ () => <Profile /> } />
