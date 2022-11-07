@@ -9,7 +9,6 @@ class ProfileEdit extends React.Component {
     user: '',
     email: '',
     descricao: '',
-    imagem: '',
   }
 
   async componentDidMount() {
@@ -22,7 +21,6 @@ class ProfileEdit extends React.Component {
       loading: false,
       email: userInfo.email,
       descricao: userInfo.descricao,
-      imagem: userInfo.imagem,
     });
   }
 
